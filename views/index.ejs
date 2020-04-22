@@ -75,7 +75,12 @@
         intervals: intervals.join(",")
       })
       .done(function( data ) {
-        alert( "Data Loaded: " + data );
+        if (data.status) {
+          alert("submit successfully");
+          $(".codes").text('')
+          $(".intervals").text('')
+          $("#collect_tool").text('')
+        }
       });
     })
   </script>
