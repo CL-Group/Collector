@@ -76,9 +76,16 @@
       })
       .done(function( data ) {
         alert("submit successfully");
+       
+        intervals = []
+        codes = []
+        complete_render_time = Date.now()
+        previous_timestamp = 0
+        initial = true 
+        
         $(".codes").text('')
         $(".intervals").text('')
-        $("#collect_tool").text('')
+        $("#collect_tool").val('')
       });
     })
   </script>
