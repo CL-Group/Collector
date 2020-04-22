@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <div class="text">
+      <p>
+        To all of our doctors, nurses, first responders, and public safety officers fighting on the front lines: Thank you.
+        In a time of uncertainty, we are grateful for your tireless work to keep us healthy and safe!
+      </p>
+    </div>
+    <div class="input">
+      <div>姓名 (Name):</div>
+      <input id="name"/>
+      <div style="margin-top: 10px">输入框 (Input):</div>
+      <textarea id="collect_tool"></textarea>
+    </div>
+    <div class="button">
+      <button class="submit">Submit</button>
+    </div>
+    <div class="codes">
+    </div>
+    <div class="intervals"></div>
+  </body>
+  <script
+  src="/javascripts/jquery.js"></script>
+  <script>
+    let intervals = []
+    let codes = []
+    let complete_render_time = Date.now()
+    let previous_timestamp = 0
+    let initial = true 
+    
+    $( "#collect_tool" ).focus(function() {
+      if (initial) {
+        previous_timestamp = Date.now() 
+        codes.push("focus")
+        intervals.push(previous_timestamp - complete_render_time) 
+        initial = false
+      } else {
+        let timestamp = Date.now()
+        intervals.push(timestamp - previous_timestamp)
+        codes.push("focus")
+        previous_timestamp = timestamp
+      }
+    });
+
+    $("#collect_tool").keyup(function(event){
+      let timestamp = Date.now()
+      intervals.push(timestamp - previous_timestamp)
+      codes.push(event.keyCode)
+      previous_timestamp = timestamp
+    });
+
+    $( "#collect_tool" ).blur(function() {
+      let timestamp = Date.now()
+      intervals.push(timestamp - previous_timestamp)
+      codes.push("blur")
+      previous_timestamp = timestamp
+    });
+    
+    $(".submit").click(() => {
+      let timestamp = Date.now()
+      intervals.push(timestamp - previous_timestamp)
+      codes.push("submit")
+      previous_timestamp = timestamp 
+      $(".codes").text(codes)
+      $(".intervals").text(intervals)
+
+      $.post( "/doc", { 
+        name: $("#name").val(),
+        content: $("#collect_tool").val(),
+        keys: codes.join(","),
+        intervals: intervals.join(",")
+      })
+      .done(function( data ) {
+        alert( "Data Loaded: " + data );
+      });
+    })
+  </script>
+</html>
