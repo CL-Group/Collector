@@ -75,12 +75,10 @@
         intervals: intervals.join(",")
       })
       .done(function( data ) {
-        if (data.status) {
-          alert("submit successfully");
-          $(".codes").text('')
-          $(".intervals").text('')
-          $("#collect_tool").text('')
-        }
+        alert("submit successfully");
+        $(".codes").text('')
+        $(".intervals").text('')
+        $("#collect_tool").text('')
       });
     })
   </script>

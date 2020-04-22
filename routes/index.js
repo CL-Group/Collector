@@ -16,11 +16,7 @@ router.post('/doc', function(req, res, next) {
   let {name, content, keys, intervals} = data
   const doc = new Record({ name, content, keys, intervals });
   doc.save().then((err) => {
-    if (err) {
-      res.json({status: 0, msg: 'fail'})
-    } else {
-      res.json({status:1, msg: 'ok'})
-    }
+    res.json({status:1, msg: 'ok'})
   });
 })
 
